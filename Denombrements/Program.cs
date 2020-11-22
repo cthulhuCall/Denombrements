@@ -18,6 +18,11 @@ namespace Denombrements
     {
         static void Main(string[] args)
         {
+            int nbTotal = 0, sousEnsemble = 0;
+            long resultat;
+            bool correct;
+
+            // Boucle sur le menu
             int choix = 1;
             while (choix != 0)
             {
@@ -26,49 +31,92 @@ namespace Denombrements
                 Console.WriteLine("Arrangement ...................... 2");
                 Console.WriteLine("Combinaison ...................... 3");
                 Console.WriteLine("Quitter .......................... 0");
-                Console.Write("Choix :                            ");
-                choix = int.Parse(Console.ReadLine());
 
-                if (choix == 0) { Environment.Exit(0); }
-
-                if (choix == 1)
+                correct = false;
+                while (!correct)
                 {
-                    // Calcul de la permutation
-                    Console.Write("nombre total d'éléments à gérer = ");
-                    // Saisie des nombres
-                    int nbTotal = int.Parse(Console.ReadLine());  
-                    // Calcul de resultat
-                    long resultat = 1;
-                    for (int k = 1; k <= nbTotal; k++)
-                        resultat *= k;
-                    // Affichage du résultat
-                    Console.WriteLine(nbTotal + "! = " + resultat);
-                }
-                else
-                {
-                    if (choix == 2)
+                    try
                     {
-                        // Calcul de l'arrangement
-                        Console.Write("nombre total d'éléments à gérer = ");
-                        // Saisie des nombres
-                        int nbTotal = int.Parse(Console.ReadLine());
-                        Console.Write("nombre d'éléments dans le sous ensemble = ");
-                        int sousEnsemble = int.Parse(Console.ReadLine());
+                        Console.Write("Choix :                            ");
+                        choix = int.Parse(Console.ReadLine());
+                        correct = true;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Saisissez un entier.");
+                    }
+                }
+                switch (choix)
+                {                    
+                    case 1:                        
+                        // Saisie des nombres avec contrôle
+                        correct = false;
+                        while (!correct)
+                        {
+                            try
+                            {
+                                Console.Write("nombre total d'éléments à gérer = ");
+                                nbTotal = int.Parse(Console.ReadLine());
+                                correct = true;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Saisissez un entier.");
+                            }
+                            
+                        }
                         // Calcul de resultat
-                        long resultat = 1;
+                        resultat = 1;
+                        for (int k = 1; k <= nbTotal; k++)
+                            resultat *= k;
+                        // Affichage du résultat
+                        Console.WriteLine(nbTotal + "! = " + resultat);
+                        break;
+
+                    case 2:
+                        // Saisie des nombres avec contrôle
+                        correct = false;
+                        while (!correct)
+                        {
+                            try
+                            {
+                                Console.Write("nombre total d'éléments à gérer = ");
+                                nbTotal = int.Parse(Console.ReadLine());
+                                Console.Write("nombre d'éléments dans le sous ensemble = ");
+                                sousEnsemble = int.Parse(Console.ReadLine());
+                                correct = true;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Saisissez un entier.");
+                            }
+                        }
+                        // Calcul de resultat
+                        resultat = 1;
                         for (int k = (nbTotal - sousEnsemble + 1); k <= nbTotal; k++)
                             resultat *= k;
                         // Affichage du résultat
                         Console.WriteLine("A(" + nbTotal + "/" + sousEnsemble + ") = " + resultat);
-                    }
-                    else
-                    {
-                        // Calcul de la combinaison
-                        Console.Write("nombre total d'éléments à gérer = "); 
-                        // Saisie des nombres
-                        int nbTotal = int.Parse(Console.ReadLine());
-                        Console.Write("nombre d'éléments dans le sous ensemble = ");
-                        int sousEnsemble = int.Parse(Console.ReadLine());
+                        break;
+
+                    case 3:
+                        // Saisie des nombres ace contrôle
+                        correct = false;
+                        while (!correct)
+                        {
+                            try
+                            {
+                                Console.Write("nombre total d'éléments à gérer = ");
+                                nbTotal = int.Parse(Console.ReadLine());
+                                Console.Write("nombre d'éléments dans le sous ensemble = ");
+                                sousEnsemble = int.Parse(Console.ReadLine());
+                                correct = true;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Saisissez un entier.");
+                            }
+                        }
                         // Calcul de resultat1
                         long resultat1 = 1;
                         for (int k = (nbTotal - sousEnsemble + 1); k <= nbTotal; k++)
@@ -79,8 +127,12 @@ namespace Denombrements
                             resultat2 *= k;
                         // Affichage du résultat
                         Console.WriteLine("C(" + nbTotal + "/" + sousEnsemble + ") = " + (resultat1 / resultat2));
-                    }
-                }
+                        break;
+
+                    default:
+                        Environment.Exit(0);
+                        break;
+                }               
             }
             Console.ReadLine();
         }
