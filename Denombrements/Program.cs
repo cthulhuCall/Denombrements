@@ -7,59 +7,34 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denombrements
 {
     class Program
     {
         /// <summary>
-        /// Fonction permettant le contrôle des saisies.
-        /// </summary>
-        /// <param name="message">Permet d'afficher un message personnalisé avant la saisie.</param>
-        /// <returns></returns>
-        static int Saisie(string message)
-        {
-            int nombre = 0;
-            bool correct = false;
-            while (!correct)
-            {
-                try
-                {
-                    Console.Write(message);
-                    nombre = int.Parse(Console.ReadLine());
-                    correct = true;
-                }
-                catch
-                {
-                    Console.WriteLine("Saisissez un entier.");
-                }
-            }
-            return nombre;
-        }
-        /// <summary>
         /// Fonction permettant de multiplier une suite d'entiers, d'une valeur à une autre.
         /// </summary>
-        /// <param name="nb">Permet de changer uniquement la taille de la boucle</param>
-        /// <param name="nbre">Permet une soustraction de k lors de son initialisation (1er terme).</param>
-        /// <param name="sousEnsemble">Permet une soustraction de k lors de son initialisation (second terme).</param>
+        /// <param name="valDebut">Valeur d'initialisation de k pour le calcul.</param>
+        /// <param name="valFin">Valeur permettant de définir la taille de la boucle.</param>
         /// <returns></returns>
-        static long CalculSuite(int nb, int nbre, int sousEnsemble)
+        static long CalculSuite(int valDebut, int valFin)
         {
             long resultat = 1;
-            for (int k = (nbre - sousEnsemble + 1); k <= nb; k++)
+            for (int k = valDebut; k <= valFin; k++)
                 resultat *= k;
             return resultat;
         }
+        /// <summary>
+        /// Boucle sur le menu permettant d'accéder aux différents calculs.
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             int nbTotal, sousEnsemble;
             // Boucle sur le menu
-            int choix = 1;
-            while (choix != 0)
+            string choix = "1";
+            while (choix != "0")
             {
                 // Affichage du menu
                 Console.WriteLine("Permutation ...................... 1");
@@ -68,36 +43,45 @@ namespace Denombrements
                 Console.WriteLine("Quitter .......................... 0");
                 // Saisie du choix
                 Console.Write("Saisissez votre choix = ");
-                choix = int.Parse(Console.ReadLine());
-
-                switch (choix)
-                {                    
-                    case 1:
-                        // Saisie des nombres avec contrôle
-                        nbTotal = Saisie("Nombre total d'éléments à gérer = ");
-                        // Calcul et affichage du resultat                        
-                        Console.WriteLine(nbTotal + "! = " + CalculSuite(nbTotal, 0, 0));
-                        break;
-                    case 2:
-                        // Saisie des nombres avec contrôle
-                        nbTotal = Saisie("Nombre total d'éléments à gérer = ");
-                        sousEnsemble = Saisie("Nombre d'éléments dans le sous ensemble = ");                        
-                        // Calcul et affichage du résultat
-                        Console.WriteLine("A(" + nbTotal + "/" + sousEnsemble + ") = " + CalculSuite(nbTotal, nbTotal, sousEnsemble));
-                        break;
-                    case 3:
-                        // Saisie des nombres avec contrôle
-                        nbTotal = Saisie("Nombre total d'éléments à gérer = ");
-                        sousEnsemble = Saisie("Nombre d'éléments dans le sous ensemble = ");                       
-                        // Calcul et affichage du résultat
-                        Console.WriteLine("C(" + nbTotal + "/" + sousEnsemble + ") = " + (CalculSuite(nbTotal, nbTotal, sousEnsemble) / CalculSuite(sousEnsemble, 0, 0)));
-                        break;
-                    default:
-                        Environment.Exit(0);
-                        break;
-                }               
+                choix = Console.ReadLine();
+                // Contrôle de saisie du choix
+                if (choix == "1" || choix == "2" || choix == "3")
+                {
+                    try
+                    {
+                        // Saisie d'un nombre
+                        Console.Write("Nombre total d'éléments à gérer = ");
+                        nbTotal = int.Parse(Console.ReadLine());
+                        if (choix == "1")
+                        {
+                            // Calcul et affichage du resultat
+                            long permutation = CalculSuite(1, nbTotal);
+                            Console.WriteLine(nbTotal + "! = " + permutation);
+                        }
+                        else
+                        {
+                            Console.Write("Nombre d'éléments dans le sous ensemble = ");
+                            sousEnsemble = int.Parse(Console.ReadLine());
+                            long arrangement = CalculSuite(nbTotal - sousEnsemble + 1, nbTotal);
+                            if (choix == "2") 
+                            {                                
+                                // Calcul et affichage du résultat
+                                Console.WriteLine("A(" + nbTotal + "/" + sousEnsemble + ") = " + arrangement);
+                            }
+                            else
+                            {
+                                // Calcul et affichage du résultat
+                                long combinaison = arrangement / CalculSuite(1, sousEnsemble);
+                                Console.WriteLine("C(" + nbTotal + "/" + sousEnsemble + ") = " + combinaison);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Erreur de calcul. Saisir une valeur correcte.");
+                    }
+                }
             }
-            Console.ReadLine();
         }
     }
 }
